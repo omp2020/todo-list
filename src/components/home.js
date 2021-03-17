@@ -3,9 +3,11 @@ import "../css/home.css"
 import Tasks from "./task"
 import Firebase from "firebase"
 import config from "../config"
+import ReactLoading from "react-loading"
 
 class Home extends Component {
   state = {
+    loading: true,
     input: "",
     task: [],
   }
@@ -19,7 +21,7 @@ class Home extends Component {
       .doc("task")
       .get()
       .then((doc) => {
-        this.setState({ task: doc.data().task })
+        this.setState({ task: doc.data().task, loading: false })
       })
   }
 
@@ -91,7 +93,14 @@ class Home extends Component {
           </button>
         </nav>
         <div className="main-container">
-          {this.state.task.length !== 0 ? (
+          {this.state.loading === true ? (
+            <ReactLoading
+              type={"bubbles"}
+              color={"black"}
+              height={300}
+              width={200}
+            />
+          ) : this.state.task.length !== 0 ? (
             <div className="task-container">
               {this.state.task.map((t) => (
                 <Tasks
