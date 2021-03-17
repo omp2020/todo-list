@@ -1,0 +1,17 @@
+.main-container {
+  background-color: aliceblue;
+  margin: 1vw;
+}
+
+.main-container > button {
+  margin-left: 2vw;
+  height: fit-content;
+}
+
+.main-container > button > img {
+  width: 2vw;
+}
+
+.main-container > span {
+  text-align: center;
+}

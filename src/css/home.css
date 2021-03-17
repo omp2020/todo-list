@@ -1,0 +1,23 @@
+.navbar {
+  background-color: aquamarine;
+  padding: 4vh;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+}
+
+.navbar > input {
+  margin-left: 5vw;
+}
+
+.main-container {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  background-color: dodgerblue;
+}
+
+.main-container > .task-container {
+  display: flex;
+  flex-direction: column;
+  padding: 4vh;
+}
