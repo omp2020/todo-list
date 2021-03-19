@@ -51,7 +51,10 @@ class Home extends Component {
     this.setState({
       task: this.state.task.concat([
         {
-          id: Math.max(this.state.task.map((i) => i.id)) + 1,
+          id:
+            this.state.task.length === 0
+              ? 0
+              : Math.max(this.state.task.map((i) => i.id)) + 1,
           value: this.state.input,
         },
       ]),
