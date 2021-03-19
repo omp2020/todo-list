@@ -91,6 +91,7 @@ class Home extends Component {
             type="text"
             onChange={this.setValue}
             value={this.state.input}
+            placeholder="Enter New Task Here.."
           />
           <button onClick={this.handleNew} style={{ marginLeft: "2vw" }}>
             <b>Add Task</b>
