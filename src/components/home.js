@@ -40,6 +40,7 @@ class Home extends Component {
 
   setValue = (e) => {
     let val = e.target.value
+    console.log(e)
     this.setState({ input: val })
   }
 
@@ -70,7 +71,7 @@ class Home extends Component {
           },
         ]),
       })
-      .then(console.log("Data Addes"))
+      .then(console.log("Data Added"), this.setState({ input: "" }))
       .catch((error) => {
         console.log("Error in updating task: ", error)
       })
