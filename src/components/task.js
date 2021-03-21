@@ -1,9 +1,7 @@
 import React, { Component } from "react"
-// import newNote from "../img/newNote.png"
+import newNote from "../img/newNote.png"
 import Trash from "../img/trash.png"
 import "../css/task.css"
-// import Firebase from "firebase"
-// import config from "../config"
 
 class Task extends Component {
   state = {
@@ -15,13 +13,15 @@ class Task extends Component {
     return (
       <div className="main-container">
         <span>{this.state.text}</span>
-        {/* <button
+        <button
           onClick={() => {
-            this.props.onEdit(this.props.id)
+            const person = prompt("Enter the task to edit:", "Task")
+            this.setState({ text: person })
+            this.props.onEdit(this.props.id, person)
           }}
         >
           <img src={newNote} alt="New Note" />
-        </button> */}
+        </button>
         <button
           onClick={() => {
             this.props.onDelete(this.props.id)

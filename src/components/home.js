@@ -7,10 +7,13 @@ import ReactLoading from "react-loading"
 
 class Home extends Component {
   state = {
+    edit: "",
     loading: true,
     input: "",
     task: [],
+    taskid: 0,
   }
+
   constructor() {
     super()
     if (!Firebase.apps.length) {
@@ -23,6 +26,13 @@ class Home extends Component {
       .then((doc) => {
         this.setState({ task: doc.data().task, loading: false })
       })
+    Firebase.firestore()
+      .collection("TEmp")
+      .doc("taskno")
+      .get()
+      .then((doc) => {
+        this.setState({ taskid: doc.data().task })
+      })
   }
 
   handleDelete = (taskID) => {
@@ -31,11 +41,46 @@ class Home extends Component {
     Firebase.firestore()
       .collection("TEmp")
       .doc("task")
-      .set({ task: this.state.task.filter((t) => t.id !== taskID) })
+      .set({ task: tasks })
       .then(console.log("Data Deleted"))
       .catch((error) => {
         console.log("Error in updating task: ", error)
       })
+  }
+
+  handleChange = (taskID, val) => {
+    if (!this.state.loading) {
+      return (
+        <>
+          <ReactLoading
+            type={"bubbles"}
+            color={"black"}
+            height={300}
+            width={200}
+          />
+        </>
+      )
+    }
+    var t
+    for (var temp in this.state.task) {
+      if (this.state.task[temp].id === taskID) {
+        t[temp] = { id: this.state.task[temp].id, value: val }
+      } else {
+        t[temp] = {
+          id: this.state.task[temp].id,
+          value: this.state.task[temp].value,
+        }
+      }
+    }
+    Firebase.firestore()
+      .collection("TEmp")
+      .doc("task")
+      .set({ task: t })
+      .then(console.log("Data Edited"))
+      .catch((error) => {
+        console.log("Error in updating task: ", error)
+      })
+    this.setState({ task: t })
   }
 
   setValue = (e) => {
@@ -49,16 +94,15 @@ class Home extends Component {
       console.log("No Data Added")
       return
     }
+    var tid = this.state.taskid + 1
     this.setState({
       task: this.state.task.concat([
         {
-          id:
-            this.state.task.length === 0
-              ? 0
-              : Math.max(this.state.task.map((i) => i.id)) + 1,
+          id: this.state.taskid === 0 ? 0 : tid,
           value: this.state.input,
         },
       ]),
+      taskid: tid,
     })
     Firebase.firestore()
       .collection("TEmp")
@@ -66,19 +110,24 @@ class Home extends Component {
       .set({
         task: this.state.task.concat([
           {
-            id: Math.max(this.state.task.map((i) => i.id)) + 1,
+            id: this.state.taskid === 0 ? 0 : tid,
             value: this.state.input,
           },
         ]),
       })
-      .then(console.log("Data Added"), this.setState({ input: "" }))
+      .then(console.log("Data Added: "), this.setState({ input: "" }))
       .catch((error) => {
         console.log("Error in updating task: ", error)
       })
-  }
-
-  handleChange = () => {
-    console.log("hello")
+    Firebase.firestore()
+      .collection("TEmp")
+      .doc("taskno")
+      .set({ task: tid })
+      .then(console.log("Task id updated"))
+      .catch((error) => {
+        console.log("Error in updating task: ", error)
+      })
+    console.log("Data Added: ", this.state.task)
   }
   render() {
     return (
